@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
 
-from layers.Attention.multihead import Multi_Head_Attention
-from layers.PostAttention.feedforward import FeedForward
+from src.layers.Attention.multihead import Multi_Head_Attention
+from src.layers.PostAttention.feedforward import FeedForward
 
 class Decoder_Layer_With_Encoder_Input(nn.Module):
     def __init__(self, config):

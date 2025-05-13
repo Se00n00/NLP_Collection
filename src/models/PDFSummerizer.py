@@ -8,9 +8,9 @@ from src.blocks.encoder import Encoder_Layer
 from src.blocks.decoder import Decoder_Layer
 from src.layers.PositionalEmbeddings.sinosuidal import SinusoidalEmbeddingLayer
 
-class QA_Generator(nn.Module):
+class Summerizer(nn.Module):
     def __init__(self, config):
-        super(QA_Generator, self).__init__()
+        super(Summerizer, self).__init__()
 
         self.embedding_layer = SinusoidalEmbeddingLayer(config.vocab_size, config.embed_dim, config.max_length, config.device)
         
