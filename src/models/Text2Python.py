@@ -8,9 +8,9 @@ from src.blocks.encoder import Encoder_Layer
 from src.blocks.decoder import Decoder_Layer_With_Encoder_Input
 from src.layers.PositionalEmbeddings.sinosuidal import SinusoidalEmbeddingLayer
 
-class Text2C(nn.Module):
+class Text2Python(nn.Module):
     def __init__(self, config):
-        super(Text2C, self).__init__()
+        super(Text2Python, self).__init__()
 
         self.embedding_layer = SinusoidalEmbeddingLayer(config.vocab_size, config.embed_dim, config.max_length, config.device)
         
