@@ -5,7 +5,7 @@ import torch.nn.functional as F
 import math
 
 from src.blocks.encoder import Encoder_Layer
-from src.blocks.decoder import Decoder_Layer_With_Encoder_Input
+from src.blocks.encoder_decoder import Encoder_Decoder_Layer
 from src.layers.PositionalEmbeddings.sinosuidal import SinusoidalEmbeddingLayer
 
 class English2Hindi(nn.Module):
@@ -14,7 +14,7 @@ class English2Hindi(nn.Module):
 
         self.embedding_layer = SinusoidalEmbeddingLayer(config.vocab_size, config.embed_dim, config.max_length, config.device)
         
-        self.decoder_layers = nn.ModuleList([Decoder_Layer_With_Encoder_Input(config) for _ in range(config.num_layers)])
+        self.decoder_layers = nn.ModuleList([Encoder_Decoder_Layer(config) for _ in range(config.num_layers)])
         self.encoder_layers = nn.ModuleList([Encoder_Layer(config) for _ in range(config.num_layers)])
 
         self.fc_out = nn.Linear(config.embed_dim, config.vocab_size)        # Final linear layer

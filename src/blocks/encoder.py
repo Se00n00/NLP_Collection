@@ -12,9 +12,9 @@ class Encoder_Layer(nn.Module):
         self.multi_head_attention = Multi_Head_Attention(config.embed_dim, config.n_heads)
         self.feed_forward = FeedForward(config.embed_dim, config.ff_dim, config.dropout)
     
-    def forward(self, x, mask=False):
+    def forward(self, x, casual_masked=False, mask=None):
         x = self.layer_norm1(x)                                         # Apply layer1 normalization
-        attention_output, attention_scores = self.multi_head_attention(x, x, x, mask)
+        attention_output, attention_scores = self.multi_head_attention(x, x, x, casual_masked=casual_masked, mask=mask)  # Self-attention
         x = x + attention_output                                        # Residual connection
         x = self.layer_norm2(x)                                         # Apply layer2 normalization
         x = x + self.feed_forward(x)                                    # Residual connection

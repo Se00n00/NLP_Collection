@@ -18,7 +18,7 @@ class Multi_Head_Attention(nn.Module):
         self.WV = nn.Linear(embed_dim, embed_dim)
         self.WO = nn.Linear(embed_dim, embed_dim)
         
-    def forward(self, q, k, v, masked=False):
+    def forward(self, q, k, v, casual_masked=False, mask=None):
         batch_size = q.size(0)
         q_len, k_len, v_len = q.size(1), k.size(1), v.size(1)
         
@@ -37,10 +37,17 @@ class Multi_Head_Attention(nn.Module):
         # Optional Assertion
         assert q_len == k_len, "Query and Key lengths must be equal for self-attention"
 
-        if masked:
-            mask = torch.triu(torch.ones(q_len, k_len, device=q.device), diagonal=1).bool() # Create causal mask (for decoder self-attention)
-            mask = mask.unsqueeze(0).unsqueeze(1)  # [1, 1, L_q, L_k]
-            scores = scores.masked_fill(mask, float('-inf'))
+        if mask is not None:
+            mask = mask.unsqueeze(1).unsqueeze(2)  # (B, 1, 1, T)
+            scores = scores.masked_fill(mask == 0, float('-inf'))
+
+
+        if casual_masked:
+            casual_mask = torch.triu(torch.ones(q_len, k_len, device=q.device), diagonal=1).bool() # Create causal mask (for decoder self-attention)
+            casual_mask = casual_mask.unsqueeze(0).unsqueeze(1)  # [1, 1, L_q, L_k]
+            scores = scores.masked_fill(casual_mask, float('-inf'))
+        
+        
         
         attention_scores = F.softmax(scores, dim=-1)  # Attention Scores[B, H, T_q, T_k]
         attention_output = torch.matmul(attention_scores, V)  # [B, H, T_q, D]
