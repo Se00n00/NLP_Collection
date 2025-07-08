@@ -2,13 +2,13 @@ import torch
 import torch.nn as nn
 
 from src.blocks.encoder import Encoder_Layer
-from src.layers.PositionalEmbeddings.sinosuidal import SinusoidalEmbeddingLayer
+from src.layers.PositionalEmbeddings.linear import EmbeddingLayer
 
-class Transformer_Decoder(nn.Module):
+class Transformer_Encoder(nn.Module):
     def __init__(self, config):
-        super(Transformer_Decoder, self).__init__()
+        super(Transformer_Encoder, self).__init__()
         
-        self.embedding_layer = SinusoidalEmbeddingLayer(config.vocab_size, config.embed_dim, config.max_length, config.device)
+        self.embedding_layer = EmbeddingLayer(config.vocab_size, config.embed_dim, config.max_length)
         self.layers = nn.ModuleList(Encoder_Layer(config) for _ in range(config.num_layers))
     
     def forward(self, input, mask=None):

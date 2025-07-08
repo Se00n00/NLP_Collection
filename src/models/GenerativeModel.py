@@ -4,13 +4,12 @@ import torch.nn.functional as F
 
 import math
 
-from src.blocks.encoder import Encoder_Layer
 from src.blocks.decoder import Decoder_Layer
 from src.layers.PositionalEmbeddings.sinosuidal import SinusoidalEmbeddingLayer
 
-class Sci_Fi_Generator(nn.Module):
+class GenerativeModel(nn.Module):
     def __init__(self, config):
-        super(Sci_Fi_Generator, self).__init__()
+        super(GenerativeModel, self).__init__()
 
         self.embedding_layer = SinusoidalEmbeddingLayer(config.vocab_size, config.embed_dim, config.max_length, config.device)
         
@@ -22,7 +21,7 @@ class Sci_Fi_Generator(nn.Module):
         input = self.embedding_layer(input)                                    # Shape: (batch, seq_len, embed_dim)
 
         for decoder_layer in self.decoder_layers:
-            input, attention_output = decoder_layer(input, input)
+            input, attention_output = decoder_layer(input)
 
         output = self.fc_out(input)
         return output, attention_output

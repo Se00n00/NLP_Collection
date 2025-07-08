@@ -15,7 +15,7 @@ class Decoder_Layer(nn.Module):
     
     def forward(self, x, mask=None):
         x = self.layer_norm1(x)                                         # Apply layer1 normalization
-        attention_output, attention_scores = self.masked_multi_head_attention(x, x, x, casual_mask=True, mask=mask)  # Self-attention with causal masking
+        attention_output, attention_scores = self.masked_multi_head_attention(x, x, x, casual_masked=True, mask=mask)  # Self-attention with causal masking
         residual1 = x + attention_output                                        # Residual connection
         
         x = self.layer_norm2(residual1)                                         # Apply layer2 normalization
