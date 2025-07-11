@@ -41,22 +41,36 @@ def _(mo):
     return
 
 
-@app.cell
-def _(ds):
-    ds.save_to_disk("wikitext")
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(
+        r"""
+    <code>To Save to the Disk and Load It</code><br><br>
+    *ds.save_to_disk("wikitext")*<br>
 
-    from datasets import load_from_disk
-    saved_ds = ds.load_from_disk("wikitext")
+    *from datasets import load_from_disk<br>
+    saved_ds = ds.load_from_disk("wikitext")*
+    """
+    )
     return
 
 
 @app.cell
-def _(Path, ds):
+def _(ds):
     text = ds['train']['text']
     text = '\n'.join(text)
     print(f"Length of Dataset: {len(text)}")
-    Path("wikitext2.txt").write_text(text)
+    # Path("wikitext2.txt").write_text(text)
     return (text,)
+
+
+@app.cell
+def _():
+    # tokenizer = ByteLevelBPETokenizer()
+    # tokenizer.train(files=["train.txt"], vocab_size=50000, min_frequency=2, special_tokens=["<s>", "<pad>", "</s>", "<unk>", "<mask>","<cls>"])
+    # tokenizer.enable_truncation(max_length=512)
+    # tokenizer.enable_padding()
+    return
 
 
 @app.cell
@@ -67,7 +81,7 @@ def _():
     from tokenizers.trainers import BpeTrainer
     from tokenizers.pre_tokenizers import ByteLevel
     from pathlib import Path
-    return BPE, BpeTrainer, ByteLevel, NFD, Path, Tokenizer
+    return BPE, BpeTrainer, ByteLevel, NFD, Tokenizer
 
 
 @app.cell
