@@ -2,3 +2,4 @@ Dataset/
 wandb/
 __marimo__/
 # Notebooks/Generation/dataset/
+Notebooks/Generation/wikitext_model.pth
